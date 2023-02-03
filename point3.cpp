@@ -4,9 +4,9 @@
 
 #include "point3.h"
 #include <limits>
-#include <algorithm>
-#include "numeric"
-#include "execution"
+#include <oneapi/tbb.h>
+
+using namespace tbb;
 
 Point3::Point3() {
     x_ = 0;
@@ -29,11 +29,11 @@ float Point3::Distance2(Point3 a, Point3 b) {
 }
 
 std::vector<int> Point3::FindClosedIndices(const std::vector<Point3> &points1, const std::vector<Point3> &points2) {
-    std::vector<int> indices(points1.size());
-    std::iota(indices.begin(), indices.end(), 0);
+    std::vector<int> indices(points1.size(), 0);
 
-    std::for_each(std::execution::par_unseq, indices.begin(), indices.end(), [&](int target){
-
+    parallel_for(size_t(0), indices.size(), [&](const size_t i){
+        Point3 target = points1[i];
+        indices[i] = FindClosedIndex(target, points2);
     });
 
     return indices;

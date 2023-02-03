@@ -4,41 +4,54 @@
 #include <vector>
 #include <chrono>
 #include <random>
-#include <algorithm>
-#include "numeric"
-#include "execution"
+
 using namespace std;
 using namespace chrono;
 
 const int kCount = 100000;
 
-vector<Point3>* generate_points(){
-    auto * result = new vector<Point3> (kCount, Point3());
+vector<Point3> *generate_points()
+{
+    auto *result = new vector<Point3>(kCount, Point3());
 
     random_device rd;
     mt19937 mt(rd());
     uniform_real_distribution<float> dist(-1.0, 1.0);
 
-    for (int i = 0; i < kCount; ++i) {
+    for (int i = 0; i < kCount; ++i)
+    {
         result->at(i) = Point3(dist(mt), dist(mt), dist(mt));
     }
 
     return result;
 }
 
-int main() {
+int main()
+{
 
-//    while (true) {
-//        auto start = system_clock::now();
-//        unique_ptr<vector<Point3>> points(generate_points());
-//        auto finished = system_clock::now();
-//
-//        cout<<"Gen points with length: "<< points->size() << " speed time: "<<duration_cast<milliseconds>(finished - start) <<endl;
-//    }
+    for (size_t i = 0; i < 10; i++)    
+    {
+        auto start = system_clock::now();
+        unique_ptr<vector<Point3>> points1(generate_points());
+        unique_ptr<vector<Point3>> points2(generate_points());
+        auto finished = system_clock::now();
 
-    std::vector<int> indices(100);
-    std::iota(indices.begin(), indices.end(), 0);
+        cout << "Gen points with length: "
+             << points1->size()
+             << " speed time: "
+             << duration_cast<milliseconds>(finished - start).count()
+             << " ms\n";
 
-    std::for_each(std::execution::par_unseq, indices.begin(), indices.end(), [](int i){cout<<"Get: " + to_string(i) + "\n";});
+        start = system_clock::now();
 
+        auto result = Point3::FindClosedIndices(*points1, *points2);
+
+        finished = system_clock::now();
+
+        cout << "Find closed indices: "
+             << result.size()
+             << " speed time: "
+             << duration_cast<milliseconds>(finished - start).count()
+             << " ms\n";
+    }
 }

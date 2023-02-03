@@ -13,3 +13,5 @@ skia_link_arguments.txt
 
 cmake-build-debug
 cmake-build-release
+
+.vscode
