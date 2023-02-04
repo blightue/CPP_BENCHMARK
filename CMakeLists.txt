@@ -5,6 +5,6 @@ find_package(TBB REQUIRED)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(${PROJECT_NAME} main.cpp point3.cpp point3.h)
+add_executable(${PROJECT_NAME} main.cpp point3.cpp point3.h benchmark.cpp benchmark.h)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE TBB::tbb)

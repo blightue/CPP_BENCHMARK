@@ -11,9 +11,11 @@ class Point3 {
 public:
     Point3();
     Point3(float x, float y, float z);
-    static float Distance2(Point3 a, Point3 b);
-    static std::vector<int> FindClosedIndices(const std::vector<Point3> &points1, const std::vector<Point3> &points2);
-    static int FindClosedIndex(const Point3 &target, const std::vector<Point3> &points);
+
+    Point3 operator-(Point3 const &other) const;
+    float sqr_distance() const;
+    float sqr_distance(Point3 const &other) const;
+
 
 private:
     float x_;

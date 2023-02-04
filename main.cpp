@@ -1,30 +1,17 @@
 #include <iostream>
 #include <memory>
-#include "point3.h"
 #include <vector>
 #include <chrono>
 #include <random>
+#include "point3.h"
+#include "benchmark.h"
 
 using namespace std;
 using namespace chrono;
 
 const int kCount = 100000;
 
-vector<Point3> *generate_points()
-{
-    auto *result = new vector<Point3>(kCount, Point3());
 
-    random_device rd;
-    mt19937 mt(rd());
-    uniform_real_distribution<float> dist(-1.0, 1.0);
-
-    for (int i = 0; i < kCount; ++i)
-    {
-        result->at(i) = Point3(dist(mt), dist(mt), dist(mt));
-    }
-
-    return result;
-}
 
 int main()
 {
@@ -32,8 +19,8 @@ int main()
     for (size_t i = 0; i < 10; i++)    
     {
         auto start = system_clock::now();
-        unique_ptr<vector<Point3>> points1(generate_points());
-        unique_ptr<vector<Point3>> points2(generate_points());
+        unique_ptr<vector<Point3>> points1 = generate_points(kCount);
+        unique_ptr<vector<Point3>> points2 = generate_points(kCount);
         auto finished = system_clock::now();
 
         cout << "Gen points with length: "
@@ -44,7 +31,7 @@ int main()
 
         start = system_clock::now();
 
-        auto result = Point3::FindClosedIndices(*points1, *points2);
+        auto result = find_closed_indices(*points1, *points2);
 
         finished = system_clock::now();
 
@@ -53,5 +40,9 @@ int main()
              << " speed time: "
              << duration_cast<milliseconds>(finished - start).count()
              << " ms\n";
+
+        cout << "Check result: "
+            << (check_indices(result, *points1, *points2) ? "Passed": "Failed")
+            << "\n\n";
     }
 }
