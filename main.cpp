@@ -1,8 +1,9 @@
 #include <iostream>
 #include <memory>
-#include "point3.h"
 #include <vector>
 #include <chrono>
+#include <random>
+#include "point3.h"
 
 using namespace std;
 using namespace chrono;
