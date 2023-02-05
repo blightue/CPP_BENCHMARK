@@ -2,7 +2,6 @@
 #include <memory>
 #include <vector>
 #include <chrono>
-#include <random>
 #include "point3.h"
 
 using namespace std;

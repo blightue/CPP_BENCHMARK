@@ -39,11 +39,6 @@ std::vector<int> Point3::find_closed_indices(const std::vector<Point3> &points1,
     return indices;
 }
 
-unique_ptr<vector<Point3>> Point3::generate_points(size_t count)
-{
-    return unique_ptr<vector<Point3>>();
-}
-
 int Point3::find_closed_index(const Point3 &target, const std::vector<Point3> &points)
 {
     float min_distance2 = std::numeric_limits<float>::max();
@@ -53,8 +48,14 @@ int Point3::find_closed_index(const Point3 &target, const std::vector<Point3> &p
     {
         float distance2 = Point3::sqr_distance(target, points[i]);
 
-        return min_index;
+        if (distance2 < min_distance2)
+        {
+            min_distance2 = distance2;
+            min_index = i;
+        }
     }
+
+    return min_index;
 }
 
 unique_ptr<vector<Point3>> Point3::generate_points(size_t count)
