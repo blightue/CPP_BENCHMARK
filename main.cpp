@@ -7,7 +7,7 @@
 using namespace std;
 using namespace chrono;
 
-const int kCount = 100000;
+const int kCount = 200000;
 
 int main()
 {
@@ -39,6 +39,6 @@ int main()
         
         cout << "Check result: " 
         << (Point3::check_closed_indices(result, *points1, *points2) ? "true" : "false")
-        << "\n\n";
+        << "\n-----------------------------------------------\n";
     }
 }
